@@ -57,7 +57,7 @@ export default function Hero() {
         >
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-cream bg-gradient-to-b from-sand to-blush shadow-[0_30px_60px_rgba(74,54,64,0.18)]">
             <img
-              src="/yulia.jpg"
+              src={`${import.meta.env.BASE_URL}yulia.jpg`}
               alt="Васильева Юлия Андреевна — врач-косметолог и дерматолог"
               className="h-full w-full object-cover object-top"
             />
