@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xxxungoodxxx.github.io/cosmetolog_yulia_vasileva/sitemap.xml

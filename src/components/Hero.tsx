@@ -26,6 +26,11 @@ export default function Hero() {
             Здоровая кожа <br />
             <span className="text-rose-deep">и уверенность</span> <br />
             в себе
+            <span className="sr-only">
+              {' '}
+              — врач-косметолог и дерматолог в Иркутске Васильева Юлия Андреевна: лечение акне,
+              омоложение, чистка лица, пилинги, биоревитализация, контурная пластика губ, лифтинг.
+            </span>
           </h1>
 
           <p className="mt-6 max-w-md text-base leading-relaxed text-plum-soft">
