@@ -5,9 +5,10 @@ import { Menu, X } from 'lucide-react'
 const links = [
   { href: '#about', label: 'О враче' },
   { href: '#services', label: 'Услуги' },
+  { href: '#procedures', label: 'Процедуры' },
   { href: '#works', label: 'Работы' },
-  { href: '#education', label: 'Образование' },
   { href: '#reviews', label: 'Отзывы' },
+  { href: '#faq', label: 'Вопросы' },
   { href: '#contact', label: 'Контакты' },
 ]
 
@@ -39,7 +40,7 @@ export default function Navbar() {
           </span>
         </a>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-6 lg:flex">
           {links.map((l) => (
             <li key={l.href}>
               <a
@@ -54,13 +55,13 @@ export default function Navbar() {
 
         <a
           href="#contact"
-          className="hidden rounded-full bg-rose-deep px-6 py-2.5 text-sm font-medium text-cream shadow-[0_8px_20px_rgba(176,110,128,0.35)] transition-transform hover:scale-105 md:inline-block"
+          className="hidden rounded-full bg-rose-deep px-6 py-2.5 text-sm font-medium text-cream shadow-[0_8px_20px_rgba(176,110,128,0.35)] transition-transform hover:scale-105 lg:inline-block"
         >
           Записаться
         </a>
 
         <button
-          className="text-plum md:hidden"
+          className="text-plum lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label="Меню"
         >
@@ -72,7 +73,7 @@ export default function Navbar() {
         <motion.div
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: 'auto', opacity: 1 }}
-          className="glass overflow-hidden md:hidden"
+          className="glass overflow-hidden lg:hidden"
         >
           <ul className="flex flex-col gap-1 px-6 py-4">
             {links.map((l) => (
