@@ -6,6 +6,7 @@ const links = [
   { href: '#about', label: 'О враче' },
   { href: '#services', label: 'Услуги' },
   { href: '#procedures', label: 'Процедуры' },
+  { href: '#pricing', label: 'Цены' },
   { href: '#works', label: 'Работы' },
   { href: '#reviews', label: 'Отзывы' },
   { href: '#faq', label: 'Вопросы' },
