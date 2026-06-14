@@ -68,6 +68,17 @@
   padding-bottom: 3.5rem !important;
 }
 
+/* leave side gutters for the navigation arrows on desktop */
+@media (min-width: 768px) {
+  .reviews-swiper,
+  .works-swiper,
+  .diplomas-swiper,
+  .training-swiper {
+    padding-left: 3.25rem;
+    padding-right: 3.25rem;
+  }
+}
+
 .reviews-swiper .swiper-pagination-bullet,
 .works-swiper .swiper-pagination-bullet,
 .diplomas-swiper .swiper-pagination-bullet,
@@ -103,6 +114,28 @@
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
   transform: scale(1.08);
+}
+
+/* place arrows in the side gutters, not over the slides */
+.reviews-swiper .swiper-button-prev,
+.works-swiper .swiper-button-prev,
+.diplomas-swiper .swiper-button-prev,
+.training-swiper .swiper-button-prev {
+  left: 0;
+}
+.reviews-swiper .swiper-button-next,
+.works-swiper .swiper-button-next,
+.diplomas-swiper .swiper-button-next,
+.training-swiper .swiper-button-next {
+  right: 0;
+}
+
+/* hide arrows on mobile — swipe by touch instead */
+@media (max-width: 767px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none !important;
+  }
 }
 .reviews-swiper .swiper-button-next::after,
 .reviews-swiper .swiper-button-prev::after,
