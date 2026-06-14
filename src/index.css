@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+
+  --color-cream: #fdf9f6;
+  --color-sand: #f6ece5;
+  --color-blush: #f3dcd5;
+  --color-rose: #c98b9b;
+  --color-rose-deep: #b06e80;
+  --color-gold: #c4a572;
+  --color-gold-soft: #d8c19a;
+  --color-plum: #4a3640;
+  --color-plum-soft: #6e5560;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-cream);
+    color: var(--color-plum);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glass {
+    background: rgba(253, 249, 246, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .gold-line {
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  }
+
+  .hero-gradient {
+    background:
+      radial-gradient(120% 90% at 80% 0%, #f6ece5 0%, transparent 55%),
+      radial-gradient(100% 80% at 0% 100%, #f3dcd5 0%, transparent 50%),
+      #fdf9f6;
+  }
+}
+
+/* Swiper pagination tuning */
+.reviews-swiper .swiper-pagination-bullet {
+  background: var(--color-rose);
+  opacity: 0.35;
+}
+.reviews-swiper .swiper-pagination-bullet-active {
+  background: var(--color-rose-deep);
+  opacity: 1;
+}
+.reviews-swiper {
+  padding-bottom: 3rem !important;
+}
