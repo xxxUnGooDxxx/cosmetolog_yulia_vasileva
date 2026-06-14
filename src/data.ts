@@ -228,39 +228,79 @@ export type Work = {
 // Фото «до / после» реальных пациентов
 export const works: Work[] = [
   {
-    image: 'works/smas-lifting.jpg',
+    image: 'works/smas-lifting.webp',
     title: 'SMAS-лифтинг',
     description: 'Подтяжка овала лица и зоны подбородка, коррекция «второго подбородка».',
   },
   {
-    image: 'works/microneedle-rf.jpg',
+    image: 'works/microneedle-rf.webp',
     title: 'Микроигольчатый RF-лифтинг',
     description: 'Повышение упругости кожи, подтяжка нижней трети лица и контура.',
   },
   {
-    image: 'works/acne-1.jpg',
+    image: 'works/acne-1.webp',
     title: 'Лечение акне',
     description: 'Комплексная терапия акне лица и спины — очищение и устранение воспалений.',
   },
   {
-    image: 'works/acne-2.jpg',
+    image: 'works/acne-2.webp',
     title: 'Лечение акне и постакне',
     description: 'Выравнивание тона и рельефа кожи лица, работа с постакне.',
   },
   {
-    image: 'works/lips-1.jpg',
+    image: 'works/lips-1.webp',
     title: 'Аугментация губ',
     description: 'Коррекция формы и объёма губ гиалуроновой кислотой.',
   },
   {
-    image: 'works/lips-2.jpg',
+    image: 'works/lips-2.webp',
     title: 'Увеличение губ',
     description: 'Естественный объём и чёткий, гармоничный контур.',
   },
   {
-    image: 'works/lips-3.jpg',
+    image: 'works/lips-3.webp',
     title: 'Контурная пластика губ',
     description: 'Деликатное моделирование с сохранением natural-вида.',
+  },
+]
+
+export type Diploma = {
+  image: string
+  title: string
+  year: string
+}
+
+// Сканы дипломов и сертификатов (с водяным знаком)
+export const diplomas: Diploma[] = [
+  {
+    image: 'diplomas/diplom-lechebnoe-delo-2014.webp',
+    title: 'Диплом специалиста — «Лечебное дело», врач',
+    year: '2014',
+  },
+  {
+    image: 'diplomas/ordinatura-dermatovenerologiya-2016.webp',
+    title: 'Диплом об окончании ординатуры — «Дерматовенерология»',
+    year: '2016',
+  },
+  {
+    image: 'diplomas/perepodgotovka-kosmetologiya-2017.webp',
+    title: 'Диплом о профессиональной переподготовке — «Косметология»',
+    year: '2017',
+  },
+  {
+    image: 'diplomas/sertifikat-dermatovenerologiya-2020.webp',
+    title: 'Сертификат специалиста — «Дерматовенерология»',
+    year: '2020',
+  },
+  {
+    image: 'diplomas/sertifikat-kosmetologiya-2020.webp',
+    title: 'Сертификат специалиста — «Косметология»',
+    year: '2020',
+  },
+  {
+    image: 'diplomas/udostoverenie-uzi-kozhi-2022.webp',
+    title: 'Удостоверение — УЗ-визуализация кожи',
+    year: '2022',
   },
 ]
 

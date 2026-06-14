@@ -1,8 +1,9 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Autoplay } from 'swiper/modules'
+import { Pagination, Navigation, Autoplay } from 'swiper/modules'
 import { Quote, Star } from 'lucide-react'
 import 'swiper/css'
 import 'swiper/css/pagination'
+import 'swiper/css/navigation'
 import { reviews } from '../data'
 
 export default function Reviews() {
@@ -23,9 +24,10 @@ export default function Reviews() {
 
         <div className="mt-14">
           <Swiper
-            modules={[Pagination, Autoplay]}
+            modules={[Pagination, Navigation, Autoplay]}
             className="reviews-swiper"
             spaceBetween={24}
+            navigation
             pagination={{ clickable: true }}
             autoplay={{ delay: 5000, disableOnInteraction: false }}
             breakpoints={{

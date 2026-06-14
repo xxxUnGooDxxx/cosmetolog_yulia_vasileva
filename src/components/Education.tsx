@@ -1,6 +1,13 @@
 import { motion } from 'framer-motion'
 import { Award } from 'lucide-react'
-import { education, training } from '../data'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
+import { education, training, diplomas } from '../data'
+
+const base = import.meta.env.BASE_URL
 
 export default function Education() {
   return (
@@ -55,8 +62,62 @@ export default function Education() {
           </div>
         </div>
 
-        {/* additional professional education */}
+        {/* diplomas carousel */}
         <div className="mt-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.28em] text-rose-deep">
+              Документы
+            </span>
+            <h3 className="mt-4 font-serif text-3xl font-semibold leading-tight text-plum md:text-4xl">
+              Дипломы и сертификаты
+            </h3>
+          </div>
+
+          <div className="mt-12">
+            <Swiper
+              modules={[Pagination, Navigation, Autoplay]}
+              className="diplomas-swiper"
+              spaceBetween={24}
+              slidesPerView={1}
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 5500, disableOnInteraction: false }}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+            >
+              {diplomas.map((d) => (
+                <SwiperSlide key={d.image} className="h-auto">
+                  <a
+                    href={`${base}${d.image}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-blush/60 bg-cream shadow-[0_10px_30px_rgba(74,54,64,0.06)]"
+                  >
+                    <div className="overflow-hidden bg-white">
+                      <img
+                        src={`${base}${d.image}`}
+                        alt={d.title}
+                        loading="lazy"
+                        className="aspect-[4/3] w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="flex-1 p-5">
+                      <span className="text-xs font-medium uppercase tracking-wide text-gold">
+                        {d.year}
+                      </span>
+                      <p className="mt-1 text-sm font-medium leading-snug text-plum">{d.title}</p>
+                    </div>
+                  </a>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+
+        {/* additional professional education carousel */}
+        <div className="mt-20">
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.28em] text-rose-deep">
               Дополнительное обучение
@@ -70,28 +131,37 @@ export default function Education() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {training.map((item, i) => (
-              <motion.div
-                key={`${item.date}-${item.institution}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.45, delay: (i % 3) * 0.08 }}
-                className="flex flex-col rounded-2xl border border-blush/60 bg-cream p-6 shadow-[0_10px_30px_rgba(74,54,64,0.05)]"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sand text-rose-deep">
-                  <Award size={20} />
-                </div>
-                <span className="mt-4 text-xs font-medium uppercase tracking-wide text-gold">
-                  {item.date}
-                </span>
-                <p className="mt-1 font-serif text-lg font-semibold leading-snug text-plum">
-                  {item.title}
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-plum-soft">{item.institution}</p>
-              </motion.div>
-            ))}
+          <div className="mt-12">
+            <Swiper
+              modules={[Pagination, Navigation, Autoplay]}
+              className="training-swiper"
+              spaceBetween={24}
+              slidesPerView={1}
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+            >
+              {training.map((item) => (
+                <SwiperSlide key={`${item.date}-${item.institution}`} className="h-auto">
+                  <div className="flex h-full flex-col rounded-2xl border border-blush/60 bg-cream p-6 shadow-[0_10px_30px_rgba(74,54,64,0.05)]">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sand text-rose-deep">
+                      <Award size={20} />
+                    </div>
+                    <span className="mt-4 text-xs font-medium uppercase tracking-wide text-gold">
+                      {item.date}
+                    </span>
+                    <p className="mt-1 font-serif text-lg font-semibold leading-snug text-plum">
+                      {item.title}
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-plum-soft">{item.institution}</p>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </div>

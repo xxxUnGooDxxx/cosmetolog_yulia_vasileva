@@ -1,4 +1,8 @@
-import { motion } from 'framer-motion'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
 import { works } from '../data'
 
 const base = import.meta.env.BASE_URL
@@ -20,36 +24,47 @@ export default function Works() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-          {works.map((work, i) => (
-            <motion.figure
-              key={work.image}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
-              className="group overflow-hidden rounded-3xl border border-blush/60 bg-cream shadow-[0_14px_40px_rgba(74,54,64,0.06)]"
-            >
-              <div className="relative overflow-hidden">
-                <img
-                  src={`${base}${work.image}`}
-                  alt={`${work.title} — фото до и после`}
-                  loading="lazy"
-                  className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <span className="absolute left-4 top-4 rounded-full bg-plum/80 px-3 py-1 text-xs font-medium uppercase tracking-wide text-cream backdrop-blur-sm">
-                  До / После
-                </span>
-              </div>
-              <figcaption className="p-6">
-                <h3 className="font-serif text-lg font-semibold text-plum">{work.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-plum-soft">{work.description}</p>
-              </figcaption>
-            </motion.figure>
-          ))}
+        <div className="mt-14">
+          <Swiper
+            modules={[Pagination, Navigation, Autoplay]}
+            className="works-swiper"
+            spaceBetween={24}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            navigation
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+          >
+            {works.map((work) => (
+              <SwiperSlide key={work.image} className="h-auto">
+                <figure className="group h-full overflow-hidden rounded-3xl border border-blush/60 bg-cream shadow-[0_14px_40px_rgba(74,54,64,0.06)]">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={`${base}${work.image}`}
+                      alt={`${work.title} — фото до и после`}
+                      loading="lazy"
+                      className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute left-4 top-4 rounded-full bg-plum/80 px-3 py-1 text-xs font-medium uppercase tracking-wide text-cream backdrop-blur-sm">
+                      До / После
+                    </span>
+                  </div>
+                  <figcaption className="p-6">
+                    <h3 className="font-serif text-lg font-semibold text-plum">{work.title}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-plum-soft">
+                      {work.description}
+                    </p>
+                  </figcaption>
+                </figure>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
-        <p className="mx-auto mt-12 max-w-2xl text-center text-xs leading-relaxed text-plum-soft">
+        <p className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-plum-soft">
           Имеются противопоказания. Перед процедурами необходима очная консультация специалиста.
         </p>
       </div>
