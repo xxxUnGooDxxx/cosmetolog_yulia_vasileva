@@ -1,15 +1,20 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Award } from 'lucide-react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Navigation, Autoplay } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
+import { SwiperSlide } from 'swiper/react'
+import Carousel from './Carousel'
+import Lightbox from './Lightbox'
 import { education, training, diplomas } from '../data'
 
 const base = import.meta.env.BASE_URL
 
 export default function Education() {
+  const [open, setOpen] = useState<number | null>(null)
+  const diplomaItems = diplomas.map((d) => ({
+    src: `${base}${d.image}`,
+    caption: `${d.title} (${d.year})`,
+  }))
+
   return (
     <section id="education" className="py-24 md:py-32">
       <div className="mx-auto max-w-5xl px-6">
@@ -74,26 +79,13 @@ export default function Education() {
           </div>
 
           <div className="mt-12">
-            <Swiper
-              modules={[Pagination, Navigation, Autoplay]}
-              className="diplomas-swiper"
-              spaceBetween={24}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              autoplay={{ delay: 5500, disableOnInteraction: false }}
-              breakpoints={{
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-              }}
-            >
-              {diplomas.map((d) => (
+            <Carousel className="diplomas-swiper" autoplayDelay={5500}>
+              {diplomas.map((d, i) => (
                 <SwiperSlide key={d.image} className="h-auto">
-                  <a
-                    href={`${base}${d.image}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-blush/60 bg-cream shadow-[0_10px_30px_rgba(74,54,64,0.06)]"
+                  <button
+                    type="button"
+                    onClick={() => setOpen(i)}
+                    className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-blush/60 bg-cream text-left shadow-[0_10px_30px_rgba(74,54,64,0.06)]"
                   >
                     <div className="overflow-hidden bg-white">
                       <img
@@ -107,14 +99,14 @@ export default function Education() {
                       <span className="text-xs font-medium uppercase tracking-wide text-gold">
                         {d.year}
                       </span>
-                      <p className="mt-1 text-sm font-medium leading-snug text-plum line-clamp-2">
+                      <p className="mt-1 line-clamp-2 text-sm font-medium leading-snug text-plum">
                         {d.title}
                       </p>
                     </div>
-                  </a>
+                  </button>
                 </SwiperSlide>
               ))}
-            </Swiper>
+            </Carousel>
           </div>
         </div>
 
@@ -134,19 +126,7 @@ export default function Education() {
           </div>
 
           <div className="mt-12">
-            <Swiper
-              modules={[Pagination, Navigation, Autoplay]}
-              className="training-swiper"
-              spaceBetween={24}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              autoplay={{ delay: 5000, disableOnInteraction: false }}
-              breakpoints={{
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-              }}
-            >
+            <Carousel className="training-swiper">
               {training.map((item) => (
                 <SwiperSlide key={`${item.date}-${item.institution}`} className="h-auto">
                   <div className="flex h-full min-h-[230px] flex-col rounded-2xl border border-blush/60 bg-cream p-6 shadow-[0_10px_30px_rgba(74,54,64,0.05)]">
@@ -156,19 +136,28 @@ export default function Education() {
                     <span className="mt-4 text-xs font-medium uppercase tracking-wide text-gold">
                       {item.date}
                     </span>
-                    <p className="mt-1 font-serif text-lg font-semibold leading-snug text-plum line-clamp-2">
+                    <p className="mt-1 line-clamp-2 font-serif text-lg font-semibold leading-snug text-plum">
                       {item.title}
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-plum-soft line-clamp-3">
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-plum-soft">
                       {item.institution}
                     </p>
                   </div>
                 </SwiperSlide>
               ))}
-            </Swiper>
+            </Carousel>
           </div>
         </div>
       </div>
+
+      {open !== null && (
+        <Lightbox
+          items={diplomaItems}
+          index={open}
+          onClose={() => setOpen(null)}
+          onChange={setOpen}
+        />
+      )}
     </section>
   )
 }

@@ -1,13 +1,15 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Navigation, Autoplay } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
+import { useState } from 'react'
+import { SwiperSlide } from 'swiper/react'
+import Carousel from './Carousel'
+import Lightbox from './Lightbox'
 import { works } from '../data'
 
 const base = import.meta.env.BASE_URL
 
 export default function Works() {
+  const [open, setOpen] = useState<number | null>(null)
+  const items = works.map((w) => ({ src: `${base}${w.image}`, caption: `${w.title}. ${w.description}` }))
+
   return (
     <section id="works" className="py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -25,26 +27,13 @@ export default function Works() {
         </div>
 
         <div className="mt-14">
-          <Swiper
-            modules={[Pagination, Navigation, Autoplay]}
-            className="works-swiper"
-            spaceBetween={24}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            navigation
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-            }}
-          >
-            {works.map((work) => (
+          <Carousel className="works-swiper">
+            {works.map((work, i) => (
               <SwiperSlide key={work.image} className="h-auto">
-                <a
-                  href={`${base}${work.image}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex h-full flex-col overflow-hidden rounded-3xl border border-blush/60 bg-cream shadow-[0_14px_40px_rgba(74,54,64,0.06)]"
+                <button
+                  type="button"
+                  onClick={() => setOpen(i)}
+                  className="group flex h-full w-full flex-col overflow-hidden rounded-3xl border border-blush/60 bg-cream text-left shadow-[0_14px_40px_rgba(74,54,64,0.06)]"
                 >
                   <div className="relative overflow-hidden">
                     <img
@@ -58,23 +47,27 @@ export default function Works() {
                     </span>
                   </div>
                   <div className="flex min-h-[116px] flex-1 flex-col p-6">
-                    <h3 className="font-serif text-lg font-semibold text-plum line-clamp-1">
+                    <h3 className="line-clamp-1 font-serif text-lg font-semibold text-plum">
                       {work.title}
                     </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-plum-soft line-clamp-2">
+                    <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-plum-soft">
                       {work.description}
                     </p>
                   </div>
-                </a>
+                </button>
               </SwiperSlide>
             ))}
-          </Swiper>
+          </Carousel>
         </div>
 
         <p className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-plum-soft">
           Имеются противопоказания. Перед процедурами необходима очная консультация специалиста.
         </p>
       </div>
+
+      {open !== null && (
+        <Lightbox items={items} index={open} onClose={() => setOpen(null)} onChange={setOpen} />
+      )}
     </section>
   )
 }

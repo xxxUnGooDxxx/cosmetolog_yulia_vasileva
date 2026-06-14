@@ -1,9 +1,6 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Navigation, Autoplay } from 'swiper/modules'
+import { SwiperSlide } from 'swiper/react'
 import { Quote, Star } from 'lucide-react'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
+import Carousel from './Carousel'
 import { reviews } from '../data'
 
 export default function Reviews() {
@@ -23,23 +20,12 @@ export default function Reviews() {
         </div>
 
         <div className="mt-14">
-          <Swiper
-            modules={[Pagination, Navigation, Autoplay]}
-            className="reviews-swiper"
-            spaceBetween={24}
-            navigation
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-            }}
-          >
+          <Carousel className="reviews-swiper">
             {reviews.map((r, i) => (
               <SwiperSlide key={i} className="h-auto">
-                <div className="flex h-full min-h-[320px] flex-col rounded-3xl border border-blush/60 bg-cream p-8 shadow-[0_14px_40px_rgba(74,54,64,0.05)]">
+                <div className="flex h-full min-h-[360px] flex-col rounded-3xl border border-blush/60 bg-cream p-8 shadow-[0_14px_40px_rgba(74,54,64,0.05)]">
                   <Quote size={32} className="shrink-0 text-rose/40" />
-                  <p className="mt-4 flex-1 text-sm leading-relaxed text-plum-soft line-clamp-6">
+                  <p className="mt-4 line-clamp-6 flex-1 text-sm leading-relaxed text-plum-soft">
                     {r.text}
                   </p>
                   <div className="mt-6 border-t border-blush/60 pt-4">
@@ -54,7 +40,7 @@ export default function Reviews() {
                 </div>
               </SwiperSlide>
             ))}
-          </Swiper>
+          </Carousel>
         </div>
 
         <div className="mt-10 text-center">
