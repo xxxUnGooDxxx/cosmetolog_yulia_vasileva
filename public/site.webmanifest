@@ -1,0 +1,20 @@
+{
+  "name": "Юлия Васильева — врач-косметолог в Иркутске",
+  "short_name": "Ю. Васильева",
+  "description": "Врач-косметолог и дерматолог в Иркутске. Запись на приём.",
+  "lang": "ru",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf9f6",
+  "theme_color": "#b06e80",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
