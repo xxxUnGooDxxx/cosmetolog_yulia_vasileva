@@ -7,8 +7,7 @@ export default function Hero() {
       id="hero"
       className="hero-gradient relative flex min-h-screen items-center overflow-hidden pt-28 pb-16"
     >
-      {/* decorative soft blobs — заметно мягче и компактнее на мобильном */}
-      <div className="pointer-events-none absolute -right-20 -top-12 h-48 w-48 rounded-full bg-blush/25 blur-3xl md:-right-24 md:top-24 md:h-80 md:w-80 md:bg-blush/30" />
+      {/* decorative soft blob */}
       <div className="pointer-events-none absolute -left-24 bottom-10 h-56 w-56 rounded-full bg-gold-soft/15 blur-3xl md:-left-20 md:h-80 md:w-80 md:bg-gold-soft/30" />
 
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-2">
