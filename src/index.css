@@ -55,7 +55,6 @@
   .hero-gradient {
     background:
       radial-gradient(120% 90% at 80% 0%, #f6ece5 0%, transparent 55%),
-      radial-gradient(100% 80% at 0% 100%, #f3dcd5 0%, transparent 50%),
       #fdf9f6;
   }
 }
