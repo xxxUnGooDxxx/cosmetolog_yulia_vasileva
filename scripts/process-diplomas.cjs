@@ -3,6 +3,7 @@
 const sharp = require('sharp')
 const fs = require('fs')
 const path = require('path')
+const { watermarkSvg } = require('./watermark.cjs')
 
 const SRC = 'C:/Users/administrator/Desktop/косметология инста/образование'
 const OUT = path.join(__dirname, '..', 'public', 'diplomas')
@@ -16,22 +17,6 @@ const files = [
   { in: '5294485651724115619.jpg', out: 'sertifikat-kosmetologiya-2020.webp' },
   { in: '5294485651724115621.jpg', out: 'udostoverenie-uzi-kozhi-2022.webp' },
 ]
-
-const WM = 'Ю. ВАСИЛЬЕВА · КОСМЕТОЛОГ'
-
-function watermarkSvg(w, h) {
-  const tile = 340
-  return Buffer.from(
-    `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <pattern id="wm" width="${tile}" height="${tile}" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
-          <text x="10" y="${tile / 2}" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="1" fill="rgba(74,54,64,0.20)">${WM}</text>
-        </pattern>
-      </defs>
-      <rect width="${w}" height="${h}" fill="url(#wm)"/>
-    </svg>`,
-  )
-}
 
 ;(async () => {
   for (const f of files) {

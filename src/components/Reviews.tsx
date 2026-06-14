@@ -37,9 +37,11 @@ export default function Reviews() {
           >
             {reviews.map((r, i) => (
               <SwiperSlide key={i} className="h-auto">
-                <div className="flex h-full flex-col rounded-3xl border border-blush/60 bg-cream p-8 shadow-[0_14px_40px_rgba(74,54,64,0.05)]">
-                  <Quote size={32} className="text-rose/40" />
-                  <p className="mt-4 flex-1 text-sm leading-relaxed text-plum-soft">{r.text}</p>
+                <div className="flex h-full min-h-[320px] flex-col rounded-3xl border border-blush/60 bg-cream p-8 shadow-[0_14px_40px_rgba(74,54,64,0.05)]">
+                  <Quote size={32} className="shrink-0 text-rose/40" />
+                  <p className="mt-4 flex-1 text-sm leading-relaxed text-plum-soft line-clamp-6">
+                    {r.text}
+                  </p>
                   <div className="mt-6 border-t border-blush/60 pt-4">
                     <div className="flex items-center gap-1 text-gold">
                       {Array.from({ length: 5 }).map((_, s) => (

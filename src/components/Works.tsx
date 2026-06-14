@@ -40,7 +40,12 @@ export default function Works() {
           >
             {works.map((work) => (
               <SwiperSlide key={work.image} className="h-auto">
-                <figure className="group h-full overflow-hidden rounded-3xl border border-blush/60 bg-cream shadow-[0_14px_40px_rgba(74,54,64,0.06)]">
+                <a
+                  href={`${base}${work.image}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full flex-col overflow-hidden rounded-3xl border border-blush/60 bg-cream shadow-[0_14px_40px_rgba(74,54,64,0.06)]"
+                >
                   <div className="relative overflow-hidden">
                     <img
                       src={`${base}${work.image}`}
@@ -52,13 +57,15 @@ export default function Works() {
                       До / После
                     </span>
                   </div>
-                  <figcaption className="p-6">
-                    <h3 className="font-serif text-lg font-semibold text-plum">{work.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-plum-soft">
+                  <div className="flex min-h-[116px] flex-1 flex-col p-6">
+                    <h3 className="font-serif text-lg font-semibold text-plum line-clamp-1">
+                      {work.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-plum-soft line-clamp-2">
                       {work.description}
                     </p>
-                  </figcaption>
-                </figure>
+                  </div>
+                </a>
               </SwiperSlide>
             ))}
           </Swiper>

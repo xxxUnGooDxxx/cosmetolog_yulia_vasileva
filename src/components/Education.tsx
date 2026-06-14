@@ -103,11 +103,13 @@ export default function Education() {
                         className="aspect-[4/3] w-full object-contain transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
-                    <div className="flex-1 p-5">
+                    <div className="flex min-h-[92px] flex-1 flex-col p-5">
                       <span className="text-xs font-medium uppercase tracking-wide text-gold">
                         {d.year}
                       </span>
-                      <p className="mt-1 text-sm font-medium leading-snug text-plum">{d.title}</p>
+                      <p className="mt-1 text-sm font-medium leading-snug text-plum line-clamp-2">
+                        {d.title}
+                      </p>
                     </div>
                   </a>
                 </SwiperSlide>
@@ -147,17 +149,19 @@ export default function Education() {
             >
               {training.map((item) => (
                 <SwiperSlide key={`${item.date}-${item.institution}`} className="h-auto">
-                  <div className="flex h-full flex-col rounded-2xl border border-blush/60 bg-cream p-6 shadow-[0_10px_30px_rgba(74,54,64,0.05)]">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sand text-rose-deep">
+                  <div className="flex h-full min-h-[230px] flex-col rounded-2xl border border-blush/60 bg-cream p-6 shadow-[0_10px_30px_rgba(74,54,64,0.05)]">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sand text-rose-deep">
                       <Award size={20} />
                     </div>
                     <span className="mt-4 text-xs font-medium uppercase tracking-wide text-gold">
                       {item.date}
                     </span>
-                    <p className="mt-1 font-serif text-lg font-semibold leading-snug text-plum">
+                    <p className="mt-1 font-serif text-lg font-semibold leading-snug text-plum line-clamp-2">
                       {item.title}
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-plum-soft">{item.institution}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-plum-soft line-clamp-3">
+                      {item.institution}
+                    </p>
                   </div>
                 </SwiperSlide>
               ))}
