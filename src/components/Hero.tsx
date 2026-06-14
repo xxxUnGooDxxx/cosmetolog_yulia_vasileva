@@ -7,9 +7,6 @@ export default function Hero() {
       id="hero"
       className="hero-gradient relative flex min-h-screen items-center overflow-hidden pt-28 pb-16"
     >
-      {/* decorative soft blob */}
-      <div className="pointer-events-none absolute -left-24 bottom-10 h-56 w-56 rounded-full bg-gold-soft/15 blur-3xl md:-left-20 md:h-80 md:w-80 md:bg-gold-soft/30" />
-
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-2">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
