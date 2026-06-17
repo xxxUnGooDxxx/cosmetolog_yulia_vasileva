@@ -315,7 +315,7 @@ export const diplomas: Diploma[] = [
 
 export const stats = [
   { value: '11 лет', label: 'опыта в профессии' },
-  { value: '4.5★', label: 'рейтинг на ПроДокторов' },
+  { value: '5★', label: 'рейтинг на ПроДокторов' },
   { value: '2', label: 'специальности: дерматолог и косметолог' },
   { value: 'с 2014', label: 'ведёт приём пациентов' },
 ]

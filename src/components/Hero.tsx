@@ -76,7 +76,7 @@ export default function Hero() {
                 <Star key={i} size={15} className="fill-gold" />
               ))}
             </div>
-            <p className="mt-1 text-xs font-medium text-plum">4.5★ · ПроДокторов</p>
+            <p className="mt-1 text-xs font-medium text-plum">5★ · ПроДокторов</p>
           </motion.div>
         </motion.div>
       </div>
