@@ -5,7 +5,7 @@
    Запуск: node scripts/build-services.cjs (в составе postbuild). */
 const fs = require('fs')
 const path = require('path')
-const { SITE, all } = require('./services-data.cjs')
+const { SITE, services, problems, serviceLike, articles } = require('./services-data.cjs')
 
 const DIST = path.join(__dirname, '..', 'dist')
 const O = SITE.origin
@@ -18,7 +18,7 @@ function esc(s) {
     .replace(/"/g, '&quot;')
 }
 
-const byId = Object.fromEntries(all.map((s) => [s.slug, s]))
+const byId = Object.fromEntries(serviceLike.map((s) => [s.slug, s]))
 
 // ---------- общий <head> / стили / шапка / подвал ----------
 
@@ -124,7 +124,7 @@ function siteHeader() {
 <a class="brand" href="/"><b>${esc(SITE.brand)}</b><span>косметолог · дерматолог</span></a>
 <nav class="hnav">
 <a href="/uslugi/">Услуги</a>
-<a href="/#procedures">Процедуры</a>
+<a href="/blog/">Блог</a>
 <a href="/#pricing">Цены</a>
 <a href="/#works">Работы</a>
 <a href="/#reviews">Отзывы</a>
@@ -135,7 +135,7 @@ function siteHeader() {
 }
 
 function siteFooter() {
-  const links = all
+  const links = serviceLike
     .map((s) => `<a href="/uslugi/${s.slug}/">${esc(s.name)}</a>`)
     .join('\n')
   return `<footer class="site"><div class="wrap">
@@ -143,6 +143,7 @@ function siteFooter() {
 <nav>
 <a href="/">Главная</a>
 <a href="/uslugi/">Все услуги</a>
+<a href="/blog/">Блог</a>
 ${links}
 </nav>
 <p class="fine">© ${new Date().getFullYear()} ${esc(SITE.doctor)}. ${esc(SITE.address)}. Тел.: ${esc(SITE.phone)}. Информация на сайте не является публичной офертой. Имеются противопоказания, необходима консультация специалиста.</p>
@@ -309,12 +310,21 @@ ${metrika()}
 
 // ---------- страница-хаб /uslugi/ ----------
 
+function serviceCards(list) {
+  return list
+    .map(
+      (s) =>
+        `<a class="card" href="/uslugi/${s.slug}/"><h3>${esc(s.name)}</h3><p>${esc(s.lead.slice(0, 100))}…</p><span class="more">Подробнее →</span></a>`,
+    )
+    .join('\n')
+}
+
 function hubPage() {
   const url = `${O}/uslugi/`
   const itemList = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: all.map((s, i) => ({
+    itemListElement: serviceLike.map((s, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: s.name,
@@ -334,7 +344,7 @@ function hubPage() {
     head({
       title: 'Услуги врача-косметолога в Иркутске — цены | Юлия Васильева',
       description:
-        'Услуги врача-косметолога и дерматолога Юлии Васильевой в Иркутске: ботулинотерапия, контурная пластика, биоревитализация, SMAS- и RF-лифтинг, лазеротерапия FOTONA, лечение акне. Запись: 8 (908) 642-44-40.',
+        'Услуги врача-косметолога и дерматолога Юлии Васильевой в Иркутске: ботулинотерапия, контурная пластика, биоревитализация, SMAS- и RF-лифтинг, лазеротерапия FOTONA, лечение акне, купероз, пигментация. Запись: 8 (908) 642-44-40.',
       keywords:
         'услуги косметолога Иркутск, косметолог Иркутск цены, процедуры косметолога Иркутск, врач косметолог дерматолог Иркутск',
       canonical: url,
@@ -348,18 +358,181 @@ ${siteHeader()}
 <div class="hero">
 <span class="kicker">Услуги · ${esc(SITE.city)}</span>
 <h1>Услуги врача-косметолога и дерматолога</h1>
-<p class="lead">Полный перечень процедур, которые я провожу в Иркутске. Выберите услугу, чтобы узнать, что это, кому подходит, как проходит и сколько стоит. Конкретный план подбираю на консультации после осмотра.</p>
+<p class="lead">Процедуры и направления лечения, которые я провожу в Иркутске. Выберите услугу, чтобы узнать, что это, кому подходит, как проходит и сколько стоит. Конкретный план подбираю на консультации после осмотра.</p>
+</div>
+<section class="block">
+<h2>Процедуры</h2>
+<div class="cards">
+${serviceCards(services)}
+</div>
+</section>
+<section class="block">
+<h2>Решение проблем кожи</h2>
+<div class="cards">
+${serviceCards(problems)}
+</div>
+</section>
+${ctaBlock('Консультация и процедуры')}
+</div>
+${siteFooter()}
+${metrika()}
+</body>
+</html>`
+  )
+}
+
+// ---------- статья блога /blog/<slug>/ ----------
+
+function articleLd(a, url) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: a.title,
+    description: a.metaDescription,
+    inLanguage: 'ru',
+    datePublished: a.date,
+    dateModified: a.date,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    author: { '@type': 'Physician', name: SITE.doctor, url: O + '/' },
+    publisher: {
+      '@type': 'Organization',
+      name: `${SITE.brand} — косметолог в Иркутске`,
+      url: O + '/',
+    },
+  }
+}
+
+function blogCrumbLd(title, url) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Главная', item: O + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Блог', item: O + '/blog/' },
+      { '@type': 'ListItem', position: 3, name: title, item: url },
+    ],
+  }
+}
+
+function articleSection(s) {
+  const body = (s.p || []).map((p) => `<p>${esc(p)}</p>`).join('\n')
+  const list = s.list
+    ? `<ul class="ticks">\n${s.list.map((i) => `<li>${esc(i)}</li>`).join('\n')}\n</ul>`
+    : ''
+  return `<section class="block">\n<h2>${esc(s.h)}</h2>\n${list}\n${body}\n</section>`
+}
+
+function articlePage(a) {
+  const url = `${O}/blog/${a.slug}/`
+  const related = (a.related || []).map((id) => byId[id]).filter(Boolean)
+  const ld = [blogCrumbLd(a.title, url), articleLd(a, url)]
+  if (a.faqs && a.faqs.length) ld.push(faqLd(a))
+
+  return (
+    head({
+      title: a.metaTitle,
+      description: a.metaDescription,
+      keywords: a.keywords,
+      canonical: url,
+      ogImage: `${O}/og.jpg`,
+      jsonld: ld,
+    }) +
+    `\n<body>
+${siteHeader()}
+<div class="wrap">
+<nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a> → <a href="/blog/">Блог</a> → ${esc(a.title)}</nav>
+<div class="hero">
+<span class="kicker">Статья · Блог</span>
+<h1>${esc(a.title)}</h1>
+<p class="lead">${esc(a.intro)}</p>
+</div>
+${a.sections.map(articleSection).join('\n')}
+${
+  a.faqs && a.faqs.length
+    ? `<section class="block">
+<h2>Частые вопросы</h2>
+<div class="faq">
+${a.faqs.map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('\n')}
+</div>
+</section>`
+    : ''
+}
+${ctaBlock('Консультация врача-косметолога')}
+${
+  related.length
+    ? `<section class="related">
+<h2>Связанные услуги</h2>
+<div class="cards">
+${related
+  .map(
+    (r) => `<a class="card" href="/uslugi/${r.slug}/"><h3>${esc(r.name)}</h3><p>${esc(r.lead.slice(0, 95))}…</p><span class="more">Подробнее →</span></a>`,
+  )
+  .join('\n')}
+</div>
+</section>`
+    : ''
+}
+</div>
+${siteFooter()}
+${metrika()}
+</body>
+</html>`
+  )
+}
+
+// ---------- хаб блога /blog/ ----------
+
+function blogHub() {
+  const url = `${O}/blog/`
+  const itemList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: articles.map((a, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: a.title,
+      url: `${O}/blog/${a.slug}/`,
+    })),
+  }
+  const crumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Главная', item: O + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Блог', item: url },
+    ],
+  }
+
+  return (
+    head({
+      title: 'Блог врача-косметолога — статьи о косметологии | Юлия Васильева',
+      description:
+        'Статьи врача-косметолога и дерматолога из Иркутска: чем отличаются процедуры, что выбрать, что можно и нельзя после инъекций, со скольки лет к косметологу и другие частые вопросы.',
+      keywords:
+        'блог косметолога, статьи о косметологии, вопросы косметологу, что лучше процедуры косметология',
+      canonical: url,
+      ogImage: `${O}/og.jpg`,
+      jsonld: [crumb, itemList],
+    }) +
+    `\n<body>
+${siteHeader()}
+<div class="wrap">
+<nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a> → Блог</nav>
+<div class="hero">
+<span class="kicker">Блог · ${esc(SITE.city)}</span>
+<h1>Статьи о косметологии</h1>
+<p class="lead">Отвечаю на частые вопросы пациентов простым языком: чем отличаются похожие процедуры, что выбрать, как вести себя после инъекций и когда вообще пора к косметологу.</p>
 </div>
 <section class="block related">
 <div class="cards">
-${all
+${articles
   .map(
-    (s) => `<a class="card" href="/uslugi/${s.slug}/"><h3>${esc(s.name)}</h3><p>${esc(s.lead.slice(0, 100))}…</p><span class="more">Подробнее →</span></a>`,
+    (a) => `<a class="card" href="/blog/${a.slug}/"><h3>${esc(a.title)}</h3><p>${esc(a.intro.slice(0, 110))}…</p><span class="more">Читать →</span></a>`,
   )
   .join('\n')}
 </div>
 </section>
-${ctaBlock('Консультация и процедуры')}
+${ctaBlock('Консультация врача-косметолога')}
 </div>
 ${siteFooter()}
 ${metrika()}
@@ -385,7 +558,9 @@ function buildSitemap() {
   const urls = [
     { loc: `${O}/`, priority: '1.0', changefreq: 'monthly' },
     { loc: `${O}/uslugi/`, priority: '0.9', changefreq: 'monthly' },
-    ...all.map((s) => ({ loc: `${O}/uslugi/${s.slug}/`, priority: '0.8', changefreq: 'monthly' })),
+    ...serviceLike.map((s) => ({ loc: `${O}/uslugi/${s.slug}/`, priority: '0.8', changefreq: 'monthly' })),
+    { loc: `${O}/blog/`, priority: '0.7', changefreq: 'monthly' },
+    ...articles.map((a) => ({ loc: `${O}/blog/${a.slug}/`, priority: '0.6', changefreq: 'monthly' })),
   ]
   const body = urls
     .map(
@@ -410,9 +585,14 @@ function writeFile(rel, content) {
     return
   }
   writeFile('uslugi/index.html', hubPage())
-  for (const s of all) {
+  for (const s of serviceLike) {
     writeFile(`uslugi/${s.slug}/index.html`, servicePage(s))
   }
+  writeFile('blog/index.html', blogHub())
+  for (const a of articles) {
+    writeFile(`blog/${a.slug}/index.html`, articlePage(a))
+  }
   writeFile('sitemap.xml', buildSitemap())
-  console.log(`[services] сгенерировано страниц: ${all.length + 1} + sitemap.xml`)
+  const total = serviceLike.length + 1 + articles.length + 1
+  console.log(`[services] сгенерировано страниц: ${total} (услуги+проблемы+блог) + sitemap.xml`)
 })()

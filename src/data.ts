@@ -21,42 +21,50 @@ export type Service = {
   icon: LucideIcon
   title: string
   description: string
+  /** Слаг страницы-направления: /uslugi/<slug>/ */
+  slug: string
 }
 
 export const services: Service[] = [
   {
     icon: Sparkles,
     title: 'Возрастные изменения кожи',
+    slug: 'omolozhenie',
     description:
       'Коррекция морщин, потери упругости и тонуса. Индивидуальные программы омоложения и поддержания молодости кожи.',
   },
   {
     icon: Droplets,
     title: 'Лечение акне',
+    slug: 'lechenie-akne',
     description:
       'Комплексная терапия акне любой степени — от лёгкой до средней. Работа с причиной, а не только с симптомом.',
   },
   {
     icon: Scan,
     title: 'Новообразования кожи',
+    slug: 'udalenie-novoobrazovaniy',
     description:
       'Диагностика и наблюдение доброкачественных новообразований с использованием дерматоскопии.',
   },
   {
     icon: Activity,
     title: 'Гипергидроз',
+    slug: 'lechenie-gipergidroza',
     description:
       'Эффективные методы коррекции повышенной потливости с долгосрочным комфортным результатом.',
   },
   {
     icon: Sun,
     title: 'Гиперпигментация',
+    slug: 'pigmentaciya',
     description:
       'Осветление пигментных пятен и выравнивание тона кожи. Безопасные протоколы под контролем врача.',
   },
   {
     icon: HeartPulse,
     title: 'Купероз и розацеа',
+    slug: 'kuperoz',
     description:
       'Укрепление сосудов, снятие покраснений и чувствительности. Возвращение коже здорового ровного вида.',
   },

@@ -19,20 +19,24 @@ export default function Services() {
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s, i) => (
-            <motion.article
+            <motion.a
               key={s.title}
+              href={`/uslugi/${s.slug}/`}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className="group rounded-3xl border border-blush/60 bg-cream p-8 shadow-[0_14px_40px_rgba(74,54,64,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_rgba(176,110,128,0.18)]"
+              className="group block rounded-3xl border border-blush/60 bg-cream p-8 shadow-[0_14px_40px_rgba(74,54,64,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_rgba(176,110,128,0.18)]"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blush to-sand text-rose-deep transition-colors group-hover:from-rose group-hover:to-rose-deep group-hover:text-cream">
                 <s.icon size={26} />
               </div>
               <h3 className="mt-6 font-serif text-2xl font-semibold text-plum">{s.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-plum-soft">{s.description}</p>
-            </motion.article>
+              <span className="mt-4 inline-block text-xs font-medium uppercase tracking-wide text-rose-deep">
+                Подробнее →
+              </span>
+            </motion.a>
           ))}
         </div>
       </div>
