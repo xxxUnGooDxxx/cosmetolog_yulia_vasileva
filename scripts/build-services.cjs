@@ -5,7 +5,7 @@
    Запуск: node scripts/build-services.cjs (в составе postbuild). */
 const fs = require('fs')
 const path = require('path')
-const { SITE, services, problems, serviceLike, articles } = require('./services-data.cjs')
+const { SITE, DOCTOR, services, problems, serviceLike, articles } = require('./services-data.cjs')
 
 const DIST = path.join(__dirname, '..', 'dist')
 const O = SITE.origin
@@ -123,10 +123,10 @@ function siteHeader() {
   return `<header class="site"><div class="row">
 <a class="brand" href="/"><b>${esc(SITE.brand)}</b><span>косметолог · дерматолог</span></a>
 <nav class="hnav">
+<a href="/o-vrache/">О враче</a>
 <a href="/uslugi/">Услуги</a>
 <a href="/blog/">Блог</a>
 <a href="/#pricing">Цены</a>
-<a href="/#works">Работы</a>
 <a href="/#reviews">Отзывы</a>
 <a href="/#contact">Контакты</a>
 </nav>
@@ -142,11 +142,13 @@ function siteFooter() {
 <a class="brand" href="/"><b>${esc(SITE.brand)}</b><span>косметолог · дерматолог · ${esc(SITE.city)}</span></a>
 <nav>
 <a href="/">Главная</a>
+<a href="/o-vrache/">О враче</a>
 <a href="/uslugi/">Все услуги</a>
 <a href="/blog/">Блог</a>
 ${links}
 </nav>
-<p class="fine">© ${new Date().getFullYear()} ${esc(SITE.doctor)}. ${esc(SITE.address)}. Тел.: ${esc(SITE.phone)}. Информация на сайте не является публичной офертой. Имеются противопоказания, необходима консультация специалиста.</p>
+<p class="fine">Приём ведётся в лицензированном медицинском учреждении — ${esc(SITE.clinicName)} («Косметология на Гусарова»). Реквизиты и лицензии — на <a href="${SITE.clinicUrl}" rel="nofollow noopener" target="_blank" style="color:var(--rose-deep)">сайте клиники</a>.</p>
+<p class="fine" style="border-top:none;padding-top:0;margin-top:.5rem">© ${new Date().getFullYear()} ${esc(SITE.doctor)}. ${esc(SITE.address)}. Тел.: ${esc(SITE.phone)}. Информация на сайте не является публичной офертой. Имеются противопоказания, необходима консультация специалиста.</p>
 </div></footer>`
 }
 
@@ -541,6 +543,155 @@ ${metrika()}
   )
 }
 
+// ---------- страница «О враче» /o-vrache/ ----------
+
+function aboutPage() {
+  const url = `${O}/o-vrache/`
+  const physician = {
+    '@context': 'https://schema.org',
+    '@type': 'Physician',
+    name: DOCTOR.fullName,
+    alternateName: 'Врач-косметолог Юлия Васильева',
+    jobTitle: 'Врач-косметолог, дерматовенеролог',
+    description: `Врач-косметолог и дерматовенеролог в Иркутске, стаж ${DOCTOR.experience}.`,
+    url,
+    image: `${O}/${DOCTOR.photo}`,
+    telephone: '+79086424440',
+    email: SITE.email,
+    medicalSpecialty: ['Dermatology'],
+    knowsAbout: [
+      'Косметология',
+      'Дерматовенерология',
+      'Лечение акне',
+      'Биоревитализация',
+      'Контурная пластика',
+      'Ботулинотерапия',
+      'Лазеротерапия',
+      'SMAS-лифтинг',
+    ],
+    alumniOf: {
+      '@type': 'CollegeOrUniversity',
+      name: 'Иркутский государственный медицинский университет',
+    },
+    worksFor: { '@type': 'MedicalClinic', name: SITE.clinicName, url: SITE.clinicUrl },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'пер. Гусарова, 2',
+      addressLocality: 'Иркутск',
+      addressRegion: 'Иркутская область',
+      addressCountry: 'RU',
+    },
+    hasCredential: DOCTOR.education.map((e) => ({
+      '@type': 'EducationalOccupationalCredential',
+      name: `${e[1]} — ${e[2]}`,
+      credentialCategory: e[2],
+      dateCreated: e[0],
+      recognizedBy: { '@type': 'Organization', name: e[3] },
+    })),
+    sameAs: [
+      'https://prodoctorov.ru/irkutsk/vrach/556654-vasileva/',
+      'https://www.instagram.com/cosmetolog_vasilev_yulia/',
+    ],
+  }
+  const crumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Главная', item: O + '/' },
+      { '@type': 'ListItem', position: 2, name: 'О враче', item: url },
+    ],
+  }
+
+  const eduList = DOCTOR.education
+    .map(
+      (e) =>
+        `<li><b style="color:var(--rose-deep);font-family:'Cormorant Garamond',serif;font-size:1.15rem">${esc(e[0])}</b> — ${esc(e[1])} <span style="color:var(--plum-soft)">(${esc(e[2])})</span><br><span style="color:var(--plum-soft);font-size:.9rem">${esc(e[3])}</span></li>`,
+    )
+    .join('\n')
+
+  const diplomaGrid = DOCTOR.diplomas
+    .map(
+      (d) =>
+        `<figure style="margin:0;background:var(--cream);border:1px solid var(--blush);border-radius:1rem;overflow:hidden"><img src="/${d[0]}" alt="${esc(d[1])} (${esc(d[2])})" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff" /><figcaption style="padding:.7rem .8rem;font-size:.8rem;color:var(--plum-soft)">${esc(d[1])}, ${esc(d[2])}</figcaption></figure>`,
+    )
+    .join('\n')
+
+  const statsRow = DOCTOR.stats
+    .map(
+      (s) =>
+        `<div style="background:var(--cream);border:1px solid var(--blush);border-radius:1rem;padding:1.1rem;text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--rose-deep)">${esc(s[0])}</div><div style="font-size:.82rem;color:var(--plum-soft);margin-top:.2rem">${esc(s[1])}</div></div>`,
+    )
+    .join('\n')
+
+  const highlights = DOCTOR.highlights
+    .map((h) => `<li><b style="color:var(--plum)">${esc(h[0])}.</b> ${esc(h[1])}</li>`)
+    .join('\n')
+
+  return (
+    head({
+      title: 'Васильева Юлия Андреевна — косметолог и дерматолог в Иркутске | О враче',
+      description: `Васильева Юлия Андреевна — врач-косметолог и дерматовенеролог в Иркутске, стаж ${DOCTOR.experience}. Образование, дипломы и сертификаты, специализация. Запись: ${SITE.phone}.`,
+      keywords:
+        'Васильева Юлия Андреевна, косметолог Иркутск отзывы, врач косметолог дерматолог Иркутск, образование косметолога, дипломы врача',
+      canonical: url,
+      ogImage: `${O}/${DOCTOR.photo}`,
+      jsonld: [crumb, physician],
+    }) +
+    `\n<body>
+${siteHeader()}
+<div class="wrap">
+<nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a> → О враче</nav>
+<div class="hero">
+<span class="kicker">О враче · ${esc(SITE.city)}</span>
+<h1>${esc(DOCTOR.fullName)} — ${esc(DOCTOR.role)} в Иркутске</h1>
+</div>
+<section class="block" style="display:grid;gap:1.6rem;grid-template-columns:1fr">
+<img src="/${DOCTOR.photo}" alt="${esc(DOCTOR.fullName)} — врач-косметолог и дерматолог в Иркутске" width="320" height="400" style="width:100%;max-width:320px;border-radius:1.5rem;object-fit:cover;box-shadow:0 20px 50px rgba(74,54,64,.15)" />
+<div>
+${DOCTOR.intro.map((p) => `<p>${esc(p)}</p>`).join('\n')}
+<ul class="ticks" style="margin-top:1rem">
+${highlights}
+</ul>
+</div>
+</section>
+
+<section class="block">
+<h2>Стаж и факты</h2>
+<div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+${statsRow}
+</div>
+</section>
+
+<section class="block">
+<h2>Образование и квалификация</h2>
+<ul style="list-style:none;padding:0;display:grid;gap:.9rem">
+${eduList}
+</ul>
+</section>
+
+<section class="block">
+<h2>Дипломы и сертификаты</h2>
+<div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">
+${diplomaGrid}
+</div>
+</section>
+
+${ctaBlock('Консультация врача-косметолога')}
+
+<section class="related">
+<h2>Услуги врача</h2>
+<div class="cards">
+${serviceCards(services.slice(0, 6))}
+</div>
+</section>
+</div>
+${siteFooter()}
+${metrika()}
+</body>
+</html>`
+  )
+}
+
 // ---------- Яндекс.Метрика ----------
 
 function metrika() {
@@ -557,6 +708,7 @@ function buildSitemap() {
   const today = new Date().toISOString().slice(0, 10)
   const urls = [
     { loc: `${O}/`, priority: '1.0', changefreq: 'monthly' },
+    { loc: `${O}/o-vrache/`, priority: '0.8', changefreq: 'monthly' },
     { loc: `${O}/uslugi/`, priority: '0.9', changefreq: 'monthly' },
     ...serviceLike.map((s) => ({ loc: `${O}/uslugi/${s.slug}/`, priority: '0.8', changefreq: 'monthly' })),
     { loc: `${O}/blog/`, priority: '0.7', changefreq: 'monthly' },
@@ -584,6 +736,7 @@ function writeFile(rel, content) {
     console.warn('[services] dist/ не найден — пропускаю (запускать после сборки)')
     return
   }
+  writeFile('o-vrache/index.html', aboutPage())
   writeFile('uslugi/index.html', hubPage())
   for (const s of serviceLike) {
     writeFile(`uslugi/${s.slug}/index.html`, servicePage(s))
@@ -593,6 +746,6 @@ function writeFile(rel, content) {
     writeFile(`blog/${a.slug}/index.html`, articlePage(a))
   }
   writeFile('sitemap.xml', buildSitemap())
-  const total = serviceLike.length + 1 + articles.length + 1
-  console.log(`[services] сгенерировано страниц: ${total} (услуги+проблемы+блог) + sitemap.xml`)
+  const total = serviceLike.length + 1 + articles.length + 1 + 1
+  console.log(`[services] сгенерировано страниц: ${total} (о враче+услуги+проблемы+блог) + sitemap.xml`)
 })()

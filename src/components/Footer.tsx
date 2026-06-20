@@ -10,7 +10,7 @@ export default function Footer() {
         </div>
 
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-plum-soft">
-          <a href="#about" className="hover:text-rose-deep">О враче</a>
+          <a href="/o-vrache/" className="hover:text-rose-deep">О враче</a>
           <a href="/uslugi/" className="hover:text-rose-deep">Услуги</a>
           <a href="/blog/" className="hover:text-rose-deep">Блог</a>
           <a href="#pricing" className="hover:text-rose-deep">Цены</a>
@@ -19,7 +19,20 @@ export default function Footer() {
         </nav>
       </div>
 
-      <div className="mx-auto mt-8 max-w-6xl border-t border-blush/40 px-6 pt-6">
+      <div className="mx-auto mt-8 max-w-6xl space-y-2 border-t border-blush/40 px-6 pt-6">
+        <p className="text-center text-xs text-plum-soft/70">
+          Приём ведётся в лицензированном медицинском учреждении — Отделение лечебной косметологии
+          ГБУЗ «ОКВД» («Косметология на Гусарова»). Реквизиты и лицензии —{' '}
+          <a
+            href="https://xn---2-7kcajdbn2armkzcbf7ahjm2a5x.xn--p1ai/"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+            className="text-rose-deep hover:underline"
+          >
+            на сайте клиники
+          </a>
+          .
+        </p>
         <p className="text-center text-xs text-plum-soft/70">
           © {new Date().getFullYear()} Васильева Юлия Андреевна. Информация на сайте не является
           публичной офертой. Имеются противопоказания, необходима консультация специалиста.

@@ -64,6 +64,13 @@ export default function About() {
                 </div>
               ))}
             </div>
+
+            <a
+              href="/o-vrache/"
+              className="mt-8 inline-flex items-center gap-2 rounded-full border border-rose-deep/40 px-7 py-3 text-sm font-medium text-rose-deep transition-colors hover:bg-rose-deep hover:text-cream"
+            >
+              Подробнее о враче, образовании и дипломах →
+            </a>
           </motion.div>
 
           <motion.div
