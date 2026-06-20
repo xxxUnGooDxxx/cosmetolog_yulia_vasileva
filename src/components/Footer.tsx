@@ -11,7 +11,8 @@ export default function Footer() {
 
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-plum-soft">
           <a href="#about" className="hover:text-rose-deep">О враче</a>
-          <a href="#services" className="hover:text-rose-deep">Услуги</a>
+          <a href="/uslugi/" className="hover:text-rose-deep">Услуги</a>
+          <a href="#pricing" className="hover:text-rose-deep">Цены</a>
           <a href="#reviews" className="hover:text-rose-deep">Отзывы</a>
           <a href="#contact" className="hover:text-rose-deep">Запись</a>
         </nav>
