@@ -78,6 +78,7 @@ header.site .row{max-width:72rem;margin:0 auto;display:flex;align-items:center;j
 h1{font-size:2.3rem;font-weight:600;margin:.6rem 0 0}
 .lead{font-size:1.12rem;color:var(--plum-soft);margin:1rem 0 0;max-width:44rem}
 .hero-img{width:100%;max-height:380px;object-fit:cover;border-radius:1.5rem;margin-top:1.75rem;box-shadow:0 20px 50px rgba(74,54,64,.12)}
+.hero-img--work{max-width:420px;max-height:none;height:auto;object-fit:contain;display:block;margin-left:auto;margin-right:auto}
 section.block{padding:2.2rem 0 0}
 h2{font-size:1.7rem;font-weight:600;margin:0 0 .9rem}
 p{margin:.6rem 0}
@@ -250,7 +251,17 @@ ${siteHeader()}
 <span class="kicker">Услуга · ${esc(SITE.city)}</span>
 <h1>${esc(s.h1)}</h1>
 <p class="lead">${esc(s.lead)}</p>
-${s.image ? `<img class="hero-img" src="/${s.image}" alt="${esc(s.imageAlt || s.name)}" loading="lazy" width="960" height="380" />` : ''}
+${
+  s.image
+    ? (() => {
+        const isWork = /^works\//.test(s.image)
+        const cls = isWork ? 'hero-img hero-img--work' : 'hero-img'
+        const w = isWork ? 480 : 960
+        const h = isWork ? 480 : 380
+        return `<img class="${cls}" src="/${s.image}" alt="${esc(s.imageAlt || s.name)}" loading="lazy" width="${w}" height="${h}" />`
+      })()
+    : ''
+}
 </div>
 
 <section class="block">
