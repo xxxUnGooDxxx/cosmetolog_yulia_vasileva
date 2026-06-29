@@ -78,7 +78,10 @@ header.site .row{max-width:72rem;margin:0 auto;display:flex;align-items:center;j
 h1{font-size:2.3rem;font-weight:600;margin:.6rem 0 0}
 .lead{font-size:1.12rem;color:var(--plum-soft);margin:1rem 0 0;max-width:44rem}
 .hero-img{width:100%;max-height:380px;object-fit:cover;border-radius:1.5rem;margin-top:1.75rem;box-shadow:0 20px 50px rgba(74,54,64,.12)}
-.hero-img--work{max-width:420px;max-height:none;height:auto;object-fit:contain;display:block;margin-left:auto;margin-right:auto}
+.hero-img--work{max-width:420px;max-height:none;height:auto;object-fit:contain;display:block;margin-left:auto;margin-right:auto;cursor:zoom-in}
+.lb{position:fixed;inset:0;background:rgba(74,54,64,.9);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem;cursor:zoom-out}
+.lb.open{display:flex}
+.lb img{max-width:96vw;max-height:92vh;border-radius:1rem;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 section.block{padding:2.2rem 0 0}
 h2{font-size:1.7rem;font-weight:600;margin:0 0 .9rem}
 p{margin:.6rem 0}
@@ -227,6 +230,7 @@ function faqLd(s) {
 function servicePage(s) {
   const url = `${O}/uslugi/${s.slug}/`
   const ogImage = s.image ? `${O}/${s.image}` : `${O}/og.jpg`
+  const isWork = !!s.image && /^works\//.test(s.image)
   const related = (s.related || [])
     .map((id) => byId[id])
     .filter(Boolean)
@@ -253,13 +257,7 @@ ${siteHeader()}
 <p class="lead">${esc(s.lead)}</p>
 ${
   s.image
-    ? (() => {
-        const isWork = /^works\//.test(s.image)
-        const cls = isWork ? 'hero-img hero-img--work' : 'hero-img'
-        const w = isWork ? 480 : 960
-        const h = isWork ? 480 : 380
-        return `<img class="${cls}" src="/${s.image}" alt="${esc(s.imageAlt || s.name)}" loading="lazy" width="${w}" height="${h}" />`
-      })()
+    ? `<img class="${isWork ? 'hero-img hero-img--work' : 'hero-img'}" src="/${s.image}" alt="${esc(s.imageAlt || s.name)}" loading="lazy" width="${isWork ? 480 : 960}" height="${isWork ? 480 : 380}" />`
     : ''
 }
 </div>
@@ -313,12 +311,26 @@ ${related
     : ''
 }
 </div>
+${isWork ? lightbox() : ''}
 ${siteFooter()}
 ${metrika()}
 </body>
 </html>`
 
   return html
+}
+
+// ---------- лайтбокс (клик по фото работы — увеличение) ----------
+
+function lightbox() {
+  return `<div class="lb" id="lb" aria-hidden="true"><img src="" alt="" /></div>
+<script>
+(function(){var lb=document.getElementById('lb');if(!lb)return;var big=lb.querySelector('img');
+document.querySelectorAll('.hero-img--work').forEach(function(im){im.addEventListener('click',function(){big.src=im.currentSrc||im.src;big.alt=im.alt;lb.classList.add('open');lb.setAttribute('aria-hidden','false');});});
+function close(){lb.classList.remove('open');lb.setAttribute('aria-hidden','true');big.removeAttribute('src');}
+lb.addEventListener('click',close);
+document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();
+</script>`
 }
 
 // ---------- страница-хаб /uslugi/ ----------
